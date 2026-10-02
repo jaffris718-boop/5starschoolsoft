@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>5 STAR SCHOOL</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+<style>
+@media print {
+  #loader, #loginPage, #sidebar, header, button, input, select, form { display:none !important; }
+  .page { display:none !important; }
+  #reports { display:block !important; }
+  #reportContent { display:block !important; }
+  body { background:#fff !important; color:#111 !important; }
+}
+</style>
+</head>
+
+<body>
+
+<div id="loader">
+    <div class="star">★</div>
+    <h1>5 STAR SCHOOL</h1>
+    <p>Monthly Fee Billing System</p>
+    <div class="loading-bar"></div>
+</div>
+
+<div id="loginPage" class="login-page">
+
+    <div class="login-card">
+
+        <div class="logo">★</div>
+
+        <h1>5 STAR SCHOOL</h1>
+
+        <p>Monthly Fee Billing System</p>
+
+        <form id="loginForm">
+
+            <input
+                id="username"
+                placeholder="Username"
+                required
+            >
+
+            <input
+                id="password"
+                type="password"
+                placeholder="Password"
+                required
+            >
+
+            <button type="submit">
+                LOGIN
+            </button>
+
+        </form>
+
+        <small>
+            Demo Admin: 5star / 5starschool
+        </small>
+
+        <div id="loginError"></div>
+
+    </div>
+
+</div>
+
+<div id="app" class="app hidden">
+
+    <aside id="sidebar">
+
+        <div class="brand">
+            ★ 5 STAR
+        </div>
+
+        <button onclick="showPage('dashboard')">
+            🏠 Dashboard
+        </button>
+
+        <button onclick="showPage('students')">
+            👨‍🎓 Students
+        </button>
+
+        <button onclick="showPage('fees')">
+            💰 Monthly Fees
+        </button>
+
+        <button onclick="showPage('payments')">
+            💳 Payments
+        </button>
+
+        <button onclick="showPage('reports')">
+            📊 Reports
+        </button>
+
+        <button onclick="logout()">
+            🚪 Logout
+        </button>
+
+    </aside>
+
+    <main>
+
+        <header>
+
+            <button
+                class="menu"
+                onclick="toggleSidebar()"
+            >
+                ☰
+            </button>
+
+            <h2 id="pageTitle">
+                Dashboard
+            </h2>
+
+            <button
+                onclick="toggleTheme()"
+                class="theme"
+            >
+                🌙
+            </button>
+
+        </header>
+
+        <section id="dashboard" class="page">
+
+            <div class="cards">
+
+                <div class="card">
+                    <span>👨‍🎓</span>
+                    <h3>Total Students</h3>
+                    <strong id="totalStudents">0</strong>
+                </div>
+
+                <div class="card">
+                    <span>💰</span>
+                    <h3>Monthly Collection</h3>
+                    <strong id="monthlyCollection">
+                        Rs. 0
+                    </strong>
+                </div>
+
+                <div class="card">
+                    <span>⏳</span>
+                    <h3>Pending</h3>
+                    <strong id="pendingFees">
+                        Rs. 0
+                    </strong>
+                </div>
+
+                <div class="card">
+                    <span>📅</span>
+                    <h3>Today's Collection</h3>
+                    <strong id="todayCollection">
+                        Rs. 0
+                    </strong>
+                </div>
+
+            </div>
+
+            <div class="panel">
+
+                <h2>5 STAR SCHOOL</h2>
+
+                <p>
+                    Real PostgreSQL database connected
+                </p>
+
+                <p>
+                    Use the sidebar to manage students,
+                    fees and payments.
+                </p>
+
+            </div>
+
+        </section>
+
+        <section id="students" class="page hidden">
+
+            <div class="panel">
+
+                <h2>Add Student</h2>
+
+                <form id="studentForm">
+
+                    <div class="form-grid">
+
+                        <input
+                            name="student_id"
+                            placeholder="Student ID"
+                            required
+                        >
+
+                        <input
+                            name="name"
+                            placeholder="Student Name"
+                            required
+                        >
+
+                        <input
+                            name="father_name"
+                            placeholder="Father Name"
+                        >
+
+                        <input
+                            name="mobile"
+                            placeholder="Mobile Number"
+                        >
+
+                        <input
+                            name="roll_no"
+                            placeholder="Roll Number"
+                        >
+
+                        <select
+                            name="class_id"
+                            id="classSelect"
+                        >
+                            <option value="">
+                                Select Class
+                            </option>
+                        </select>
+
+                        <input
+                            name="monthly_fee"
+                            type="number"
+                            placeholder="Monthly Fee"
+                            value="3000"
+                        >
+
+                        <input
+                            name="discount"
+                            type="number"
+                            placeholder="Discount"
+                            value="0"
+                        >
+
+                        <input
+                            name="previous_balance"
+                            type="number"
+                            placeholder="Previous Balance"
+                            value="0"
+                        >
+
+                    </div>
+
+                    <button type="submit">
+                        + Add Student
+                    </button>
+
+                </form>
+
+            </div>
+
+            <div class="panel">
+
+                <h2>Students</h2>
+
+                <input
+                    id="studentSearch"
+                    placeholder="Search students..."
+                    oninput="filterStudents()"
+                >
+
+                <div class="table-wrap">
+
+                    <table>
+
+                        <thead>
+
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Father</th>
+                            <th>Class</th>
+                            <th>Fee</th>
+                            <th>Status</th>
+                        </tr>
+
+                        </thead>
+
+                        <tbody id="studentsTable">
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <section id="fees" class="page hidden">
+
+            <div class="panel">
+
+                <h2>Monthly Fee Records</h2>
+
+                <button onclick="generateFees()">
+                    Generate Current Month Fees
+                </button>
+
+                <div class="table-wrap">
+
+                    <table>
+
+                        <thead>
+
+                        <tr>
+                            <th>Invoice</th>
+                            <th>Student</th>
+                            <th>Month</th>
+                            <th>Total</th>
+                            <th>Paid</th>
+                            <th>Remaining</th>
+                            <th>Status</th>
+                        </tr>
+
+                        </thead>
+
+                        <tbody id="feesTable">
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <section id="payments" class="page hidden">
+
+            <div class="panel">
+
+                <h2>Fee Payment</h2>
+
+                <form id="paymentForm">
+
+                    <input
+                        id="feeRecordId"
+                        type="number"
+                        placeholder="Fee Record ID"
+                        required
+                    >
+
+                    <input
+                        id="paymentAmount"
+                        type="number"
+                        placeholder="Amount"
+                        required
+                    >
+
+                    <select id="paymentMethod">
+
+                        <option>Cash</option>
+                        <option>Bank</option>
+                        <option>Easypaisa</option>
+                        <option>JazzCash</option>
+                        <option>Other</option>
+
+                    </select>
+
+                    <button type="submit">
+                        Collect Fee
+                    </button>
+
+                </form>
+
+                <div id="paymentMessage"></div>
+
+            </div>
+
+            <div class="panel">
+
+                <h2>Payment History</h2>
+
+                <div class="table-wrap">
+
+                    <table>
+
+                        <thead>
+
+                        <tr>
+                            <th>Receipt</th>
+                            <th>Student</th>
+                            <th>Amount</th>
+                            <th>Method</th>
+                            <th>Date</th>
+                        </tr>
+
+                        </thead>
+
+                        <tbody id="paymentsTable">
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <section id="reports" class="page hidden">
+
+            <div class="panel">
+
+                <h2>Reports</h2>
+
+                <button type="button" onclick="printReport()">
+                    🖨 Print Report
+                </button>
+
+                <div id="reportContent">
+
+                    <h3>
+                        5 STAR SCHOOL
+                    </h3>
+
+                    <p>
+                        Monthly Fee Collection Report
+                    </p>
+
+                    <p>
+                        Current records are loaded
+                        directly from PostgreSQL.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+<script src="app.js"></script>
+
+</body>
+</html>
