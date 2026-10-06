@@ -1704,54 +1704,27 @@ app.get(
    SERVER START
    ========================================================= */
 
-const PORT =
-    process.env.PORT ||
-    5000;
+const PORT = process.env.PORT || 5000;
 
+if (require.main === module) {
 
-app.listen(
-    PORT,
-    async () => {
+    app.listen(PORT, async () => {
 
         console.log("");
-
-        console.log(
-            "========================================="
-        );
-
-        console.log(
-            "       ⭐ 5 STAR SCHOOL"
-        );
-
-        console.log(
-            "   Monthly Fee Billing System"
-        );
-
-        console.log(
-            "========================================="
-        );
-
-        console.log(
-            `Server: http://localhost:${PORT}`
-        );
-
+        console.log("=========================================");
+        console.log("       ⭐ 5 STAR SCHOOL");
+        console.log("   Monthly Fee Billing System");
+        console.log("=========================================");
+        console.log(`Server: http://localhost:${PORT}`);
         console.log("");
-
 
         try {
 
-            await pool.query(
-                "SELECT 1"
-            );
+            await pool.query("SELECT 1");
 
-
-            console.log(
-                "PostgreSQL: CONNECTED"
-            );
-
+            console.log("PostgreSQL: CONNECTED");
 
             await createDefaultAdmin();
-
 
         } catch (error) {
 
@@ -1762,5 +1735,8 @@ app.listen(
 
         }
 
-    }
-);
+    });
+
+}
+
+module.exports = app;

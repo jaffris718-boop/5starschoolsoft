@@ -5,7 +5,6 @@
 
 "use strict";
 
-
 /* =========================================================
    GLOBAL VARIABLES
    ========================================================= */
@@ -37,7 +36,6 @@ function setText(id, value) {
 
 
 function formatNumber(value) {
-
     const number = Number(value || 0);
 
     return number.toLocaleString("en-PK", {
@@ -125,12 +123,10 @@ async function api(url, options = {}) {
         }
     };
 
-
     if (token) {
         requestOptions.headers.Authorization =
             `Bearer ${token}`;
     }
-
 
     let response;
 
@@ -153,13 +149,10 @@ async function api(url, options = {}) {
         );
     }
 
-
     const responseText =
         await response.text();
 
-
     let data = null;
-
 
     if (responseText) {
 
@@ -172,7 +165,6 @@ async function api(url, options = {}) {
             data = responseText;
         }
     }
-
 
     if (response.status === 401) {
 
@@ -187,11 +179,9 @@ async function api(url, options = {}) {
         );
     }
 
-
     if (!response.ok) {
 
         let message = "Request failed";
-
 
         if (
             data &&
@@ -212,10 +202,8 @@ async function api(url, options = {}) {
             message = data;
         }
 
-
         throw new Error(message);
     }
-
 
     return data;
 }
@@ -231,9 +219,7 @@ document.addEventListener(
 
         setupForms();
 
-
         const loader = $("loader");
-
 
         setTimeout(() => {
 
@@ -242,7 +228,6 @@ document.addEventListener(
             }
 
         }, 800);
-
 
         if (token) {
 
@@ -266,7 +251,6 @@ function setupForms() {
 
     const loginForm = $("loginForm");
 
-
     if (loginForm) {
 
         loginForm.addEventListener(
@@ -280,9 +264,7 @@ function setupForms() {
         );
     }
 
-
     const studentForm = $("studentForm");
-
 
     if (studentForm) {
 
@@ -297,9 +279,7 @@ function setupForms() {
         );
     }
 
-
     const paymentForm = $("paymentForm");
-
 
     if (paymentForm) {
 
@@ -325,7 +305,6 @@ function showLogin() {
     const loginPage = $("loginPage");
     const app = $("app");
 
-
     if (loginPage) {
 
         loginPage.classList.remove("hidden");
@@ -334,7 +313,6 @@ function showLogin() {
         loginPage.style.visibility = "visible";
         loginPage.style.opacity = "1";
     }
-
 
     if (app) {
 
@@ -354,14 +332,12 @@ function showMainApp() {
     const loginPage = $("loginPage");
     const app = $("app");
 
-
     if (loginPage) {
 
         loginPage.classList.add("hidden");
 
         loginPage.style.display = "none";
     }
-
 
     if (app) {
 
@@ -384,18 +360,15 @@ async function login() {
     const passwordInput = $("password");
     const loginError = $("loginError");
 
-
     const username =
         usernameInput
             ? usernameInput.value.trim()
             : "";
 
-
     const password =
         passwordInput
             ? passwordInput.value
             : "";
-
 
     if (!username || !password) {
 
@@ -407,14 +380,12 @@ async function login() {
         return;
     }
 
-
     try {
 
         if (loginError) {
             loginError.textContent =
                 "Logging in...";
         }
-
 
         const data = await api(
             "/api/login",
@@ -428,13 +399,11 @@ async function login() {
             }
         );
 
-
         const receivedToken =
             data?.token ||
             data?.accessToken ||
             data?.jwt ||
             "";
-
 
         if (!receivedToken) {
 
@@ -443,29 +412,22 @@ async function login() {
             );
         }
 
-
         token = receivedToken;
-
 
         localStorage.setItem(
             "token",
             token
         );
 
-
         if (loginError) {
             loginError.textContent = "";
         }
 
-
         showMainApp();
-
 
         await initializeApp();
 
-
         showPage("dashboard");
-
 
     } catch (error) {
 
@@ -473,7 +435,6 @@ async function login() {
             "Login error:",
             error
         );
-
 
         if (loginError) {
 
@@ -509,12 +470,6 @@ async function initializeApp() {
         "Initializing 5 STAR SCHOOL..."
     );
 
-
-    /*
-     * Har API ko separately load kar rahe hain.
-     * Ek fail hone par software stuck nahi hoga.
-     */
-
     await loadClasses();
 
     await loadStudents();
@@ -524,7 +479,6 @@ async function initializeApp() {
     await loadPayments();
 
     await loadDashboard();
-
 
     console.log(
         "5 STAR SCHOOL initialized successfully."
@@ -541,7 +495,6 @@ function showPage(pageName) {
     const pages =
         document.querySelectorAll(".page");
 
-
     pages.forEach(page => {
 
         page.classList.add("hidden");
@@ -549,9 +502,7 @@ function showPage(pageName) {
         page.style.display = "none";
     });
 
-
     const target = $(pageName);
-
 
     if (!target) {
 
@@ -563,11 +514,9 @@ function showPage(pageName) {
         return;
     }
 
-
     target.classList.remove("hidden");
 
     target.style.display = "block";
-
 
     const titles = {
 
@@ -582,34 +531,25 @@ function showPage(pageName) {
         reports: "Reports"
     };
 
-
     setText(
         "pageTitle",
         titles[pageName] ||
         "5 STAR SCHOOL"
     );
 
-
     if (pageName === "students") {
-
         renderStudents(students);
     }
 
-
     if (pageName === "fees") {
-
         renderFees(fees);
     }
 
-
     if (pageName === "payments") {
-
         renderPayments(payments);
     }
 
-
     if (pageName === "reports") {
-
         updateReport();
     }
 }
@@ -623,11 +563,9 @@ function toggleSidebar() {
 
     const sidebar = $("sidebar");
 
-
     if (!sidebar) {
         return;
     }
-
 
     sidebar.classList.toggle("open");
 }
@@ -643,12 +581,10 @@ function toggleTheme() {
         "dark-mode"
     );
 
-
     const darkMode =
         document.body.classList.contains(
             "dark-mode"
         );
-
 
     localStorage.setItem(
         "darkMode",
@@ -656,8 +592,6 @@ function toggleTheme() {
     );
 }
 
-
-/* Restore theme */
 
 if (
     localStorage.getItem("darkMode") === "1"
@@ -680,7 +614,6 @@ async function loadDashboard() {
         const data =
             await api("/api/dashboard");
 
-
         if (data) {
 
             const totalStudents =
@@ -688,24 +621,20 @@ async function loadDashboard() {
                 data.total_students ??
                 data.students;
 
-
             const monthlyCollection =
                 data.monthlyCollection ??
                 data.monthly_collection ??
                 data.collection;
-
 
             const pendingFees =
                 data.pendingFees ??
                 data.pending_fees ??
                 data.pending;
 
-
             const todayCollection =
                 data.todayCollection ??
                 data.today_collection ??
                 data.today;
-
 
             if (
                 totalStudents !== undefined
@@ -718,7 +647,6 @@ async function loadDashboard() {
                     )
                 );
             }
-
 
             if (
                 monthlyCollection !== undefined
@@ -733,7 +661,6 @@ async function loadDashboard() {
                 );
             }
 
-
             if (
                 pendingFees !== undefined
             ) {
@@ -746,7 +673,6 @@ async function loadDashboard() {
                     )
                 );
             }
-
 
             if (
                 todayCollection !== undefined
@@ -769,18 +695,12 @@ async function loadDashboard() {
             error.message
         );
 
-
-        /*
-         * Fallback calculations
-         */
-
         setText(
             "totalStudents",
             formatNumber(
                 students.length
             )
         );
-
 
         calculateDashboardFromFees();
 
@@ -800,7 +720,6 @@ async function loadClasses() {
         const data =
             await api("/api/classes");
 
-
         if (Array.isArray(data)) {
 
             classes = data;
@@ -818,9 +737,7 @@ async function loadClasses() {
             classes = [];
         }
 
-
         renderClasses();
-
 
     } catch (error) {
 
@@ -828,7 +745,6 @@ async function loadClasses() {
             "Classes loading error:",
             error
         );
-
 
         classes = [];
 
@@ -846,18 +762,15 @@ function renderClasses() {
     const select =
         $("classSelect");
 
-
     if (!select) {
         return;
     }
-
 
     select.innerHTML = `
         <option value="">
             Select Class
         </option>
     `;
-
 
     classes.forEach(
         classItem => {
@@ -867,12 +780,10 @@ function renderClasses() {
                     "option"
                 );
 
-
             const id =
                 classItem.id ??
                 classItem.class_id ??
                 "";
-
 
             const name =
                 classItem.name ??
@@ -881,11 +792,9 @@ function renderClasses() {
                 classItem.class ??
                 id;
 
-
             option.value = id;
 
             option.textContent = name;
-
 
             select.appendChild(
                 option
@@ -910,7 +819,6 @@ function getClassName(classId) {
         return "";
     }
 
-
     const found =
         classes.find(item => {
 
@@ -918,17 +826,13 @@ function getClassName(classId) {
                 item.id ??
                 item.class_id;
 
-
             return String(id) ===
                 String(classId);
         });
 
-
     if (!found) {
-
         return String(classId);
     }
-
 
     return (
         found.name ??
@@ -952,16 +856,13 @@ async function loadStudents() {
             "Loading students..."
         );
 
-
         const data =
             await api("/api/students");
-
 
         console.log(
             "Students API response:",
             data
         );
-
 
         if (Array.isArray(data)) {
 
@@ -969,9 +870,7 @@ async function loadStudents() {
 
         } else if (
             data &&
-            Array.isArray(
-                data.students
-            )
+            Array.isArray(data.students)
         ) {
 
             students =
@@ -979,9 +878,7 @@ async function loadStudents() {
 
         } else if (
             data &&
-            Array.isArray(
-                data.data
-            )
+            Array.isArray(data.data)
         ) {
 
             students =
@@ -989,9 +886,7 @@ async function loadStudents() {
 
         } else if (
             data &&
-            Array.isArray(
-                data.rows
-            )
+            Array.isArray(data.rows)
         ) {
 
             students =
@@ -1002,17 +897,12 @@ async function loadStudents() {
             students = [];
         }
 
-
         console.log(
             "Students loaded:",
             students.length
         );
 
-
-        renderStudents(
-            students
-        );
-
+        renderStudents(students);
 
         setText(
             "totalStudents",
@@ -1021,7 +911,6 @@ async function loadStudents() {
             )
         );
 
-
     } catch (error) {
 
         console.error(
@@ -1029,13 +918,10 @@ async function loadStudents() {
             error
         );
 
-
         students = [];
-
 
         const tbody =
             $("studentsTable");
-
 
         if (tbody) {
 
@@ -1067,7 +953,6 @@ function renderStudents(
     const tbody =
         $("studentsTable");
 
-
     if (!tbody) {
 
         console.error(
@@ -1077,9 +962,7 @@ function renderStudents(
         return;
     }
 
-
     tbody.innerHTML = "";
-
 
     if (
         !Array.isArray(list) ||
@@ -1101,14 +984,12 @@ function renderStudents(
         return;
     }
 
-
     list.forEach(student => {
 
         const tr =
             document.createElement(
                 "tr"
             );
-
 
         const studentId =
             student.student_id ??
@@ -1117,12 +998,10 @@ function renderStudents(
             student.id ??
             "";
 
-
         const name =
             student.name ??
             student.student_name ??
             "";
-
 
         const fatherName =
             student.father_name ??
@@ -1130,14 +1009,12 @@ function renderStudents(
             student.parent_name ??
             "";
 
-
         let className =
             student.class_name ??
             student.class_title ??
             student.className ??
             student.class ??
             "";
-
 
         if (!className) {
 
@@ -1147,18 +1024,15 @@ function renderStudents(
                 );
         }
 
-
         const monthlyFee =
             student.monthly_fee ??
             student.fee ??
             student.monthlyFee ??
             0;
 
-
         const status =
             student.status ??
             "Active";
-
 
         tr.innerHTML = `
 
@@ -1192,7 +1066,6 @@ function renderStudents(
             </td>
         `;
 
-
         tbody.appendChild(tr);
     });
 }
@@ -1207,19 +1080,15 @@ async function addStudent() {
     const form =
         $("studentForm");
 
-
     if (!form) {
         return;
     }
 
-
     const formData =
         new FormData(form);
 
-
     const classValue =
         formData.get("class_id");
-
 
     const studentData = {
 
@@ -1230,14 +1099,12 @@ async function addStudent() {
                 ) || ""
             ).trim(),
 
-
         name:
             String(
                 formData.get(
                     "name"
                 ) || ""
             ).trim(),
-
 
         father_name:
             String(
@@ -1246,14 +1113,12 @@ async function addStudent() {
                 ) || ""
             ).trim(),
 
-
         mobile:
             String(
                 formData.get(
                     "mobile"
                 ) || ""
             ).trim(),
-
 
         roll_no:
             String(
@@ -1262,12 +1127,10 @@ async function addStudent() {
                 ) || ""
             ).trim(),
 
-
         class_id:
             classValue
                 ? Number(classValue)
                 : null,
-
 
         monthly_fee:
             Number(
@@ -1276,14 +1139,12 @@ async function addStudent() {
                 ) || 0
             ),
 
-
         discount:
             Number(
                 formData.get(
                     "discount"
                 ) || 0
             ),
-
 
         previous_balance:
             Number(
@@ -1292,7 +1153,6 @@ async function addStudent() {
                 ) || 0
             )
     };
-
 
     if (
         !studentData.student_id
@@ -1306,7 +1166,6 @@ async function addStudent() {
         return;
     }
 
-
     if (
         !studentData.name
     ) {
@@ -1318,7 +1177,6 @@ async function addStudent() {
 
         return;
     }
-
 
     try {
 
@@ -1334,52 +1192,42 @@ async function addStudent() {
             }
         );
 
-
         showMessage(
             "Student successfully added."
         );
 
-
         form.reset();
-
 
         const feeInput =
             form.querySelector(
                 '[name="monthly_fee"]'
             );
 
-
         if (feeInput) {
             feeInput.value = "3000";
         }
-
 
         const discountInput =
             form.querySelector(
                 '[name="discount"]'
             );
 
-
         if (discountInput) {
             discountInput.value = "0";
         }
-
 
         const previousBalanceInput =
             form.querySelector(
                 '[name="previous_balance"]'
             );
 
-
         if (previousBalanceInput) {
             previousBalanceInput.value = "0";
         }
 
-
         await loadStudents();
 
         await loadDashboard();
-
 
     } catch (error) {
 
@@ -1387,7 +1235,6 @@ async function addStudent() {
             "Add student error:",
             error
         );
-
 
         showMessage(
             error.message ||
@@ -1407,17 +1254,14 @@ function filterStudents() {
     const searchInput =
         $("studentSearch");
 
-
     if (!searchInput) {
         return;
     }
-
 
     const search =
         searchInput.value
             .toLowerCase()
             .trim();
-
 
     if (!search) {
 
@@ -1427,7 +1271,6 @@ function filterStudents() {
 
         return;
     }
-
 
     const filtered =
         students.filter(
@@ -1454,7 +1297,6 @@ function filterStudents() {
                     student.class
                 ];
 
-
                 return values.some(
                     value =>
                         String(
@@ -1465,7 +1307,6 @@ function filterStudents() {
                 );
             }
         );
-
 
     renderStudents(
         filtered
@@ -1485,10 +1326,8 @@ async function loadFees() {
             "Loading fee records..."
         );
 
-
         const data =
             await api("/api/fees");
-
 
         if (Array.isArray(data)) {
 
@@ -1523,20 +1362,16 @@ async function loadFees() {
             fees = [];
         }
 
-
         console.log(
             "Fee records loaded:",
             fees.length
         );
 
-
         renderFees(
             fees
         );
 
-
         calculateDashboardFromFees();
-
 
     } catch (error) {
 
@@ -1544,7 +1379,6 @@ async function loadFees() {
             "Fees loading error:",
             error
         );
-
 
         fees = [];
 
@@ -1564,14 +1398,11 @@ function renderFees(
     const tbody =
         $("feesTable");
 
-
     if (!tbody) {
         return;
     }
 
-
     tbody.innerHTML = "";
-
 
     if (
         !Array.isArray(list) ||
@@ -1593,7 +1424,6 @@ function renderFees(
         return;
     }
 
-
     list.forEach(fee => {
 
         const tr =
@@ -1601,21 +1431,10 @@ function renderFees(
                 "tr"
             );
 
-
-        /*
-         * THIS IS THE IMPORTANT ID.
-         *
-         * PostgreSQL fee_records.id
-         *
-         * Payment API needs:
-         * fee_record_id
-         */
-
         const feeRecordId =
             fee.id ??
             fee.fee_record_id ??
             "";
-
 
         const invoice =
             fee.invoice_no ??
@@ -1624,20 +1443,17 @@ function renderFees(
             feeRecordId ??
             "";
 
-
         const studentName =
             fee.student_name ??
             fee.name ??
             fee.student ??
             "";
 
-
         const month =
             fee.month ??
             fee.fee_month ??
             fee.billing_month ??
             "";
-
 
         const total =
             fee.total ??
@@ -1646,12 +1462,10 @@ function renderFees(
             fee.monthly_fee ??
             0;
 
-
         const paid =
             fee.paid ??
             fee.paid_amount ??
             0;
-
 
         const remaining =
             fee.remaining ??
@@ -1662,7 +1476,6 @@ function renderFees(
                 0
             );
 
-
         const status =
             fee.status ??
             (
@@ -1671,15 +1484,12 @@ function renderFees(
                     : "PENDING"
             );
 
-
         const statusUpper =
             String(
                 status
             ).toUpperCase();
 
-
         let action = "";
-
 
         if (
             Number(remaining) > 0 &&
@@ -1737,7 +1547,6 @@ function renderFees(
             `;
         }
 
-
         tr.innerHTML = `
 
             <td>
@@ -1779,7 +1588,6 @@ function renderFees(
 
         `;
 
-
         tbody.appendChild(tr);
     });
 }
@@ -1797,10 +1605,8 @@ function selectFeeForPayment(
     const feeInput =
         $("feeRecordId");
 
-
     const amountInput =
         $("paymentAmount");
-
 
     if (!feeInput) {
 
@@ -1812,7 +1618,6 @@ function selectFeeForPayment(
         return;
     }
 
-
     if (!amountInput) {
 
         showMessage(
@@ -1823,31 +1628,15 @@ function selectFeeForPayment(
         return;
     }
 
-
-    /*
-     * Actual PostgreSQL fee_records.id
-     */
-
     feeInput.value =
         Number(feeId);
-
-
-    /*
-     * Remaining amount
-     */
 
     amountInput.value =
         Number(remaining);
 
-
-    /*
-     * Payment page open
-     */
-
     showPage(
         "payments"
     );
-
 
     showPaymentMessage(
         "Fee selected. Remaining amount Rs. " +
@@ -1857,7 +1646,6 @@ function selectFeeForPayment(
         " ready hai.",
         "success"
     );
-
 
     amountInput.focus();
 }
@@ -1874,25 +1662,15 @@ async function generateFees() {
             "Current month ki fees generate karni hain?"
         );
 
-
     if (!confirmed) {
         return;
     }
-
 
     try {
 
         showMessage(
             "Monthly fees generate ho rahi hain..."
         );
-
-
-        /*
-         * Current backend ko request bheji ja rahi hai.
-         *
-         * Backend current month/year
-         * aur active students handle karega.
-         */
 
         const data =
             await api(
@@ -1904,17 +1682,14 @@ async function generateFees() {
                 }
             );
 
-
         console.log(
             "Fee generation response:",
             data
         );
 
-
         showMessage(
             "Monthly fees successfully generated."
         );
-
 
         await loadFees();
 
@@ -1922,15 +1697,9 @@ async function generateFees() {
 
         await loadDashboard();
 
-
-        /*
-         * Automatically Fees page show
-         */
-
         showPage(
             "fees"
         );
-
 
     } catch (error) {
 
@@ -1938,7 +1707,6 @@ async function generateFees() {
             "Generate fees error:",
             error
         );
-
 
         showMessage(
             error.message ||
@@ -1959,7 +1727,6 @@ async function loadPayments() {
 
         const data =
             await api("/api/payments");
-
 
         if (Array.isArray(data)) {
 
@@ -2000,14 +1767,11 @@ async function loadPayments() {
             payments = [];
         }
 
-
         renderPayments(
             payments
         );
 
-
         calculateDashboardFromPayments();
-
 
     } catch (error) {
 
@@ -2015,7 +1779,6 @@ async function loadPayments() {
             "Payments loading error:",
             error
         );
-
 
         payments = [];
 
@@ -2035,14 +1798,11 @@ function renderPayments(
     const tbody =
         $("paymentsTable");
 
-
     if (!tbody) {
         return;
     }
 
-
     tbody.innerHTML = "";
-
 
     if (
         !Array.isArray(list) ||
@@ -2064,14 +1824,12 @@ function renderPayments(
         return;
     }
 
-
     list.forEach(payment => {
 
         const tr =
             document.createElement(
                 "tr"
             );
-
 
         const receipt =
             payment.receipt_no ??
@@ -2080,13 +1838,11 @@ function renderPayments(
             payment.id ??
             "";
 
-
         const studentName =
             payment.student_name ??
             payment.name ??
             payment.student ??
             "";
-
 
         const amount =
             payment.amount ??
@@ -2094,19 +1850,16 @@ function renderPayments(
             payment.payment_amount ??
             0;
 
-
         const method =
             payment.payment_method ??
             payment.method ??
             "Cash";
-
 
         const date =
             payment.payment_date ??
             payment.date ??
             payment.created_at ??
             "";
-
 
         tr.innerHTML = `
 
@@ -2135,9 +1888,99 @@ function renderPayments(
 
         `;
 
-
         tbody.appendChild(tr);
     });
+}
+
+
+/* =========================================================
+   FIND SELECTED FEE
+   ========================================================= */
+
+function findFeeRecord(feeId) {
+
+    if (!Array.isArray(fees)) {
+        return null;
+    }
+
+    return fees.find(fee => {
+
+        const id =
+            fee.id ??
+            fee.fee_record_id ??
+            "";
+
+        return Number(id) === Number(feeId);
+    }) || null;
+}
+
+
+/* =========================================================
+   FIND STUDENT
+   ========================================================= */
+
+function findStudentFromFee(fee) {
+
+    if (!fee) {
+        return null;
+    }
+
+    const studentId =
+        fee.student_id ??
+        fee.studentId ??
+        fee.student?.id ??
+        fee.student?.student_id ??
+        null;
+
+    if (
+        studentId !== null &&
+        studentId !== undefined
+    ) {
+
+        const found =
+            students.find(student => {
+
+                const id =
+                    student.id ??
+                    student.student_id ??
+                    student.student_code ??
+                    "";
+
+                return String(id) ===
+                    String(studentId);
+            });
+
+        if (found) {
+            return found;
+        }
+    }
+
+    const feeStudentName =
+        fee.student_name ??
+        fee.name ??
+        fee.student ??
+        "";
+
+    if (feeStudentName) {
+
+        const found =
+            students.find(student => {
+
+                const name =
+                    student.name ??
+                    student.student_name ??
+                    "";
+
+                return String(name).toLowerCase() ===
+                    String(feeStudentName).toLowerCase();
+            });
+
+        if (found) {
+            return found;
+        }
+    }
+
+    return null;
 }
 
 
@@ -2150,35 +1993,25 @@ async function collectPayment() {
     const feeRecordInput =
         $("feeRecordId");
 
-
     const amountInput =
         $("paymentAmount");
 
-
     const methodInput =
         $("paymentMethod");
-
 
     const feeId =
         Number(
             feeRecordInput?.value || 0
         );
 
-
     const amount =
         Number(
             amountInput?.value || 0
         );
 
-
     const method =
         methodInput?.value ||
         "Cash";
-
-
-    /*
-     * Validate Fee Record ID
-     */
 
     if (!feeId) {
 
@@ -2189,11 +2022,6 @@ async function collectPayment() {
 
         return;
     }
-
-
-    /*
-     * Validate amount
-     */
 
     if (
         !amount ||
@@ -2209,17 +2037,83 @@ async function collectPayment() {
     }
 
 
-    try {
+    /*
+     * IMPORTANT:
+     * Payment se pehle selected fee record
+     * find kar rahe hain.
+     */
 
-        /*
-         * VERY IMPORTANT
-         *
-         * server.js expects:
-         *
-         * fee_record_id
-         * amount
-         * payment_method
-         */
+    const selectedFee =
+        findFeeRecord(feeId);
+
+
+    /*
+     * Selected fee se student find karein.
+     */
+
+    const selectedStudent =
+        findStudentFromFee(
+            selectedFee
+        );
+
+
+    /*
+     * Student information.
+     *
+     * Pehle fee record check hoga,
+     * phir students array.
+     */
+
+    const receiptStudentName =
+        selectedStudent?.name ??
+        selectedStudent?.student_name ??
+        selectedFee?.student_name ??
+        selectedFee?.name ??
+        selectedFee?.student ??
+        "";
+
+
+    const receiptFatherName =
+        selectedStudent?.father_name ??
+        selectedStudent?.father ??
+        selectedStudent?.parent_name ??
+        selectedFee?.father_name ??
+        selectedFee?.father ??
+        "";
+
+
+    const receiptStudentId =
+        selectedStudent?.student_id ??
+        selectedStudent?.student_code ??
+        selectedStudent?.registration_no ??
+        selectedStudent?.id ??
+        selectedFee?.student_id ??
+        "";
+
+
+    let receiptClass =
+        selectedStudent?.class_name ??
+        selectedStudent?.class_title ??
+        selectedStudent?.className ??
+        selectedStudent?.class ??
+        selectedFee?.class_name ??
+        selectedFee?.class ??
+        "";
+
+
+    if (
+        !receiptClass &&
+        selectedStudent?.class_id
+    ) {
+
+        receiptClass =
+            getClassName(
+                selectedStudent.class_id
+            );
+    }
+
+
+    try {
 
         const paymentData = {
 
@@ -2261,7 +2155,10 @@ async function collectPayment() {
 
 
         /*
-         * Receipt information save
+         * IMPORTANT RECEIPT OBJECT
+         *
+         * Backend response + selected
+         * student information.
          */
 
         window.lastReceipt = {
@@ -2270,17 +2167,60 @@ async function collectPayment() {
 
             receipt_no:
                 data?.receipt_no ||
+                data?.receipt ||
+                data?.receipt_number ||
+                "",
+
+            student_name:
+                data?.student_name ||
+                data?.name ||
+                receiptStudentName ||
+                "",
+
+            name:
+                data?.name ||
+                data?.student_name ||
+                receiptStudentName ||
+                "",
+
+            father_name:
+                data?.father_name ||
+                receiptFatherName ||
+                "",
+
+            student_id:
+                data?.student_id ||
+                receiptStudentId ||
+                "",
+
+            class_name:
+                data?.class_name ||
+                receiptClass ||
                 "",
 
             amount:
-                amount,
+                Number(
+                    data?.amount ??
+                    amount
+                ),
 
             payment_method:
+                data?.payment_method ||
+                data?.method ||
                 method,
 
             payment_date:
+                data?.payment_date ||
+                data?.date ||
+                data?.created_at ||
                 new Date().toISOString()
         };
+
+
+        console.log(
+            "FINAL RECEIPT DATA:",
+            window.lastReceipt
+        );
 
 
         showPaymentMessage(
@@ -2288,10 +2228,6 @@ async function collectPayment() {
             "success"
         );
 
-
-        /*
-         * Clear inputs
-         */
 
         if (feeRecordInput) {
             feeRecordInput.value = "";
@@ -2302,10 +2238,6 @@ async function collectPayment() {
             amountInput.value = "";
         }
 
-
-        /*
-         * Refresh database data
-         */
 
         await loadFees();
 
@@ -2320,16 +2252,42 @@ async function collectPayment() {
 
         if (
             data &&
-            data.receipt_no
+            (
+                data.receipt_no ||
+                data.receipt ||
+                data.receipt_number
+            )
         ) {
 
             const printNow =
                 confirm(
                     "Payment successful!\n\n" +
                     "Receipt No: " +
-                    data.receipt_no +
-                    "\n\n" +
-                    "Receipt print karni hai?"
+                    (
+                        window.lastReceipt.receipt_no ||
+                        "N/A"
+                    ) +
+                    "\n\nReceipt print karni hai?"
+                );
+
+
+            if (printNow) {
+
+                printReceipt(
+                    window.lastReceipt
+                );
+            }
+        } else {
+
+            /*
+             * Agar backend receipt number
+             * na bheje tab bhi receipt print
+             * ki ja sakti hai.
+             */
+
+            const printNow =
+                confirm(
+                    "Payment successful!\n\nReceipt print karni hai?"
                 );
 
 
@@ -2348,7 +2306,6 @@ async function collectPayment() {
             "Payment error:",
             error
         );
-
 
         showPaymentMessage(
             error.message ||
@@ -2371,7 +2328,6 @@ function showPaymentMessage(
     const box =
         $("paymentMessage");
 
-
     if (!box) {
 
         showMessage(
@@ -2384,22 +2340,17 @@ function showPaymentMessage(
         return;
     }
 
-
     box.textContent =
         message;
-
 
     box.style.marginTop =
         "10px";
 
-
     box.style.padding =
         "10px";
 
-
     box.style.borderRadius =
         "8px";
-
 
     if (
         type === "error"
@@ -2434,9 +2385,7 @@ function calculateDashboardFromFees() {
         return;
     }
 
-
     let pending = 0;
-
 
     fees.forEach(fee => {
 
@@ -2449,14 +2398,12 @@ function calculateDashboardFromFees() {
                 0
             );
 
-
         const paid =
             Number(
                 fee.paid ??
                 fee.paid_amount ??
                 0
             );
-
 
         const remaining =
             fee.remaining !== undefined
@@ -2468,11 +2415,9 @@ function calculateDashboardFromFees() {
                     0
                 );
 
-
         pending +=
             remaining;
     });
-
 
     setText(
         "pendingFees",
@@ -2496,9 +2441,7 @@ function calculateDashboardFromPayments() {
         return;
     }
 
-
     let total = 0;
-
 
     payments.forEach(
         payment => {
@@ -2512,7 +2455,6 @@ function calculateDashboardFromPayments() {
         }
     );
 
-
     setText(
         "monthlyCollection",
         "Rs. " +
@@ -2520,18 +2462,12 @@ function calculateDashboardFromPayments() {
     );
 
 
-    /*
-     * Today's collection
-     */
-
     const today =
         new Date()
             .toISOString()
             .slice(0, 10);
 
-
     let todayTotal = 0;
-
 
     payments.forEach(
         payment => {
@@ -2541,7 +2477,6 @@ function calculateDashboardFromPayments() {
                 payment.date ??
                 payment.created_at ??
                 "";
-
 
             if (
                 date &&
@@ -2559,7 +2494,6 @@ function calculateDashboardFromPayments() {
             }
         }
     );
-
 
     setText(
         "todayCollection",
@@ -2581,12 +2515,10 @@ function formatDate(value) {
         return "";
     }
 
-
     try {
 
         const date =
             new Date(value);
-
 
         if (
             isNaN(
@@ -2596,7 +2528,6 @@ function formatDate(value) {
 
             return String(value);
         }
-
 
         return date.toLocaleDateString(
             "en-PK",
@@ -2623,16 +2554,13 @@ function updateReport() {
     const report =
         $("reportContent");
 
-
     if (!report) {
         return;
     }
 
-
     let totalCollection = 0;
 
     let totalPending = 0;
-
 
     payments.forEach(
         payment => {
@@ -2647,7 +2575,6 @@ function updateReport() {
         }
     );
 
-
     fees.forEach(
         fee => {
 
@@ -2660,14 +2587,12 @@ function updateReport() {
                     0
                 );
 
-
             const paid =
                 Number(
                     fee.paid ??
                     fee.paid_amount ??
                     0
                 );
-
 
             const remaining =
                 fee.remaining !== undefined
@@ -2679,12 +2604,10 @@ function updateReport() {
                         0
                     );
 
-
             totalPending +=
                 remaining;
         }
     );
-
 
     report.innerHTML = `
 
@@ -2699,16 +2622,13 @@ function updateReport() {
                 5 STAR SCHOOL
             </h2>
 
-
             <h3>
                 Monthly Fee Collection Report
             </h3>
 
-
             <p>
                 Current records are loaded directly from PostgreSQL.
             </p>
-
 
             <p>
                 Date:
@@ -2720,7 +2640,6 @@ function updateReport() {
             </p>
 
         </div>
-
 
         <div style="
             display:grid;
@@ -2748,7 +2667,6 @@ function updateReport() {
 
             </div>
 
-
             <div style="
                 border:1px solid #ddd;
                 padding:15px;
@@ -2767,7 +2685,6 @@ function updateReport() {
                 </h2>
 
             </div>
-
 
             <div style="
                 border:1px solid #ddd;
@@ -2790,7 +2707,6 @@ function updateReport() {
 
         </div>
 
-
         <table style="
             width:100%;
             border-collapse:collapse;
@@ -2807,14 +2723,12 @@ function updateReport() {
                         Receipt
                     </th>
 
-
                     <th style="
                         border:1px solid #ccc;
                         padding:8px;
                     ">
                         Student
                     </th>
-
 
                     <th style="
                         border:1px solid #ccc;
@@ -2823,14 +2737,12 @@ function updateReport() {
                         Amount
                     </th>
 
-
                     <th style="
                         border:1px solid #ccc;
                         padding:8px;
                     ">
                         Method
                     </th>
-
 
                     <th style="
                         border:1px solid #ccc;
@@ -2842,7 +2754,6 @@ function updateReport() {
                 </tr>
 
             </thead>
-
 
             <tbody>
 
@@ -2858,12 +2769,11 @@ function updateReport() {
                                 payment.id ??
                                 "";
 
-
                             const studentName =
                                 payment.student_name ??
                                 payment.name ??
+                                payment.student ??
                                 "";
-
 
                             const amount =
                                 payment.amount ??
@@ -2871,19 +2781,16 @@ function updateReport() {
                                 payment.payment_amount ??
                                 0;
 
-
                             const method =
                                 payment.payment_method ??
                                 payment.method ??
                                 "";
-
 
                             const date =
                                 payment.payment_date ??
                                 payment.date ??
                                 payment.created_at ??
                                 "";
-
 
                             return `
 
@@ -2898,7 +2805,6 @@ function updateReport() {
                                         )}
                                     </td>
 
-
                                     <td style="
                                         border:1px solid #ccc;
                                         padding:8px;
@@ -2907,7 +2813,6 @@ function updateReport() {
                                             studentName
                                         )}
                                     </td>
-
 
                                     <td style="
                                         border:1px solid #ccc;
@@ -2919,7 +2824,6 @@ function updateReport() {
                                         )}
                                     </td>
 
-
                                     <td style="
                                         border:1px solid #ccc;
                                         padding:8px;
@@ -2928,7 +2832,6 @@ function updateReport() {
                                             method
                                         )}
                                     </td>
-
 
                                     <td style="
                                         border:1px solid #ccc;
@@ -2979,10 +2882,8 @@ function printReport() {
 
     updateReport();
 
-
     const reportContent =
         $("reportContent");
-
 
     if (!reportContent) {
 
@@ -2994,14 +2895,12 @@ function printReport() {
         return;
     }
 
-
     const printWindow =
         window.open(
             "",
             "_blank",
             "width=1000,height=700"
         );
-
 
     if (!printWindow) {
 
@@ -3012,7 +2911,6 @@ function printReport() {
 
         return;
     }
-
 
     printWindow.document.write(`
 
@@ -3026,9 +2924,7 @@ function printReport() {
                 5 STAR SCHOOL - Monthly Fee Report
             </title>
 
-
             <meta charset="UTF-8">
-
 
             <style>
 
@@ -3073,7 +2969,6 @@ function printReport() {
 
         </head>
 
-
         <body>
 
             ${reportContent.innerHTML}
@@ -3083,9 +2978,7 @@ function printReport() {
         </html>
     `);
 
-
     printWindow.document.close();
-
 
     printWindow.onload =
         function () {
@@ -3109,7 +3002,6 @@ function printReceipt(
         payment ||
         window.lastReceipt;
 
-
     if (!data) {
 
         showMessage(
@@ -3120,6 +3012,10 @@ function printReceipt(
         return;
     }
 
+
+    /* =====================================================
+       RECEIPT DATA
+       ===================================================== */
 
     const receipt =
         data.receipt_no ??
@@ -3133,6 +3029,27 @@ function printReceipt(
         data.student_name ??
         data.name ??
         data.student ??
+        "N/A";
+
+
+    const fatherName =
+        data.father_name ??
+        data.father ??
+        data.parent_name ??
+        "N/A";
+
+
+    const studentId =
+        data.student_id ??
+        data.student_code ??
+        data.registration_no ??
+        "";
+
+
+    const className =
+        data.class_name ??
+        data.class ??
+        data.class_title ??
         "";
 
 
@@ -3156,11 +3073,18 @@ function printReceipt(
         new Date();
 
 
+    const month =
+        data.month ??
+        data.fee_month ??
+        data.billing_month ??
+        "";
+
+
     const printWindow =
         window.open(
             "",
             "_blank",
-            "width=500,height=700"
+            "width=550,height=800"
         );
 
 
@@ -3175,6 +3099,10 @@ function printReceipt(
     }
 
 
+    /* =====================================================
+       RECEIPT HTML
+       ===================================================== */
+
     printWindow.document.write(`
 
         <!DOCTYPE html>
@@ -3185,53 +3113,221 @@ function printReceipt(
 
             <meta charset="UTF-8">
 
-
             <title>
                 Fee Receipt - 5 STAR SCHOOL
             </title>
 
-
             <style>
 
+                * {
+                    box-sizing: border-box;
+                }
+
                 body {
-                    font-family: Arial, sans-serif;
+
+                    font-family:
+                        Arial,
+                        Helvetica,
+                        sans-serif;
+
+                    margin: 0;
+
                     padding: 25px;
+
                     color: #111;
+
                     background: #fff;
                 }
 
+
                 .receipt {
-                    max-width: 450px;
+
+                    width: 100%;
+
+                    max-width: 500px;
+
                     margin: auto;
+
                     border: 2px solid #111;
+
                     padding: 25px;
+
+                    background: #fff;
                 }
 
-                h1,
-                h2,
-                p {
+
+                .school-name {
+
                     text-align: center;
+
+                    font-size: 27px;
+
+                    font-weight: 800;
+
+                    margin-bottom: 5px;
                 }
+
+
+                .receipt-title {
+
+                    text-align: center;
+
+                    font-size: 20px;
+
+                    font-weight: 700;
+
+                    margin-bottom: 5px;
+                }
+
+
+                .subtitle {
+
+                    text-align: center;
+
+                    color: #555;
+
+                    font-size: 13px;
+
+                    margin-bottom: 20px;
+                }
+
+
+                .line {
+
+                    border-top: 1px solid #222;
+
+                    margin: 15px 0;
+                }
+
 
                 .row {
+
                     display: flex;
-                    justify-content: space-between;
+
+                    justify-content:
+                        space-between;
+
+                    align-items: center;
+
                     gap: 20px;
-                    border-bottom: 1px solid #ddd;
+
+                    border-bottom:
+                        1px solid #ddd;
+
                     padding: 10px 0;
+
+                    font-size: 14px;
                 }
 
-                .amount {
-                    font-size: 24px;
-                    font-weight: bold;
-                    text-align: center;
-                    margin: 25px 0;
+
+                .row strong {
+
+                    min-width: 130px;
                 }
+
+
+                .row span {
+
+                    text-align: right;
+
+                    font-weight: 600;
+
+                    word-break: break-word;
+                }
+
+
+                .student-box {
+
+                    border:
+                        1px solid #bbb;
+
+                    padding: 12px;
+
+                    margin: 15px 0;
+                }
+
+
+                .amount-box {
+
+                    text-align: center;
+
+                    border:
+                        2px solid #111;
+
+                    padding: 15px;
+
+                    margin: 20px 0;
+                }
+
+
+                .amount-label {
+
+                    font-size: 14px;
+
+                    font-weight: 600;
+                }
+
+
+                .amount {
+
+                    font-size: 30px;
+
+                    font-weight: 800;
+
+                    margin-top: 5px;
+                }
+
+
+                .thankyou {
+
+                    text-align: center;
+
+                    margin-top: 25px;
+
+                    font-size: 13px;
+
+                    color: #444;
+                }
+
+
+                .signature {
+
+                    display: flex;
+
+                    justify-content:
+                        space-between;
+
+                    margin-top: 45px;
+
+                    font-size: 12px;
+                }
+
+
+                .signature div {
+
+                    width: 40%;
+
+                    text-align: center;
+
+                    border-top:
+                        1px solid #111;
+
+                    padding-top: 6px;
+                }
+
 
                 @media print {
 
                     body {
+
                         padding: 0;
+                    }
+
+                    .receipt {
+
+                        border: 2px solid #111;
+
+                        max-width: 100%;
                     }
                 }
 
@@ -3244,47 +3340,131 @@ function printReceipt(
 
             <div class="receipt">
 
-                <h1>
+
+                <div class="school-name">
+
                     ★ 5 STAR SCHOOL
-                </h1>
+
+                </div>
 
 
-                <h2>
+                <div class="receipt-title">
+
                     FEE RECEIPT
-                </h2>
+
+                </div>
 
 
-                <p>
+                <div class="subtitle">
+
                     Monthly Fee Billing System
-                </p>
+
+                </div>
+
+
+                <div class="line"></div>
 
 
                 <div class="row">
 
                     <strong>
-                        Receipt:
+                        Receipt No:
                     </strong>
 
                     <span>
                         ${escapeHTML(
-                            receipt
+                            receipt || "N/A"
                         )}
                     </span>
 
                 </div>
 
 
-                <div class="row">
+                <div class="student-box">
 
-                    <strong>
-                        Student:
-                    </strong>
 
-                    <span>
-                        ${escapeHTML(
-                            studentName
-                        )}
-                    </span>
+                    <div class="row">
+
+                        <strong>
+                            Student Name:
+                        </strong>
+
+                        <span>
+                            ${escapeHTML(
+                                studentName
+                            )}
+                        </span>
+
+                    </div>
+
+
+                    <div class="row">
+
+                        <strong>
+                            Father Name:
+                        </strong>
+
+                        <span>
+                            ${escapeHTML(
+                                fatherName
+                            )}
+                        </span>
+
+                    </div>
+
+
+                    <div class="row">
+
+                        <strong>
+                            Student ID:
+                        </strong>
+
+                        <span>
+                            ${escapeHTML(
+                                studentId || "N/A"
+                            )}
+                        </span>
+
+                    </div>
+
+
+                    <div class="row">
+
+                        <strong>
+                            Class:
+                        </strong>
+
+                        <span>
+                            ${escapeHTML(
+                                className || "N/A"
+                            )}
+                        </span>
+
+                    </div>
+
+
+                    ${
+                        month
+                        ?
+                        `
+                        <div class="row">
+
+                            <strong>
+                                Fee Month:
+                            </strong>
+
+                            <span>
+                                ${escapeHTML(
+                                    month
+                                )}
+                            </span>
+
+                        </div>
+                        `
+                        :
+                        ""
+                    }
+
 
                 </div>
 
@@ -3307,40 +3487,62 @@ function printReceipt(
                 <div class="row">
 
                     <strong>
-                        Date:
+                        Payment Date:
                     </strong>
 
                     <span>
                         ${escapeHTML(
-                            formatDate(
-                                date
-                            )
+                            formatDate(date)
                         )}
                     </span>
 
                 </div>
 
 
-                <div class="amount">
+                <div class="amount-box">
 
-                    Paid:
+                    <div class="amount-label">
 
-                    Rs.
-                    ${formatNumber(
-                        amount
-                    )}
+                        AMOUNT PAID
+
+                    </div>
+
+
+                    <div class="amount">
+
+                        Rs.
+                        ${formatNumber(
+                            amount
+                        )}
+
+                    </div>
 
                 </div>
 
 
-                <p>
+                <div class="thankyou">
+
                     Thank you for your payment.
-                </p>
 
+                    <br><br>
 
-                <p>
                     5 STAR SCHOOL
-                </p>
+
+                </div>
+
+
+                <div class="signature">
+
+                    <div>
+                        Parent Signature
+                    </div>
+
+                    <div>
+                        School Incharge
+                    </div>
+
+                </div>
+
 
             </div>
 
@@ -3383,7 +3585,6 @@ async function refreshAll() {
 
         updateReport();
 
-
         showMessage(
             "Data refreshed successfully."
         );
@@ -3394,7 +3595,6 @@ async function refreshAll() {
             "Refresh error:",
             error
         );
-
 
         showMessage(
             "Data refresh mein problem hui.",
@@ -3439,85 +3639,44 @@ window.getPayments =
 window.showPage =
     showPage;
 
-
 window.logout =
     logout;
-
 
 window.toggleSidebar =
     toggleSidebar;
 
-
 window.toggleTheme =
     toggleTheme;
-
 
 window.generateFees =
     generateFees;
 
-
 window.printReport =
     printReport;
-
 
 window.printReceipt =
     printReceipt;
 
-
 window.filterStudents =
     filterStudents;
-
 
 window.refreshAll =
     refreshAll;
 
-
 window.loadStudents =
     loadStudents;
-
 
 window.loadFees =
     loadFees;
 
-
 window.loadPayments =
     loadPayments;
-
 
 window.loadDashboard =
     loadDashboard;
 
-
 window.selectFeeForPayment =
     selectFeeForPayment;
-
-
-/* =========================================================
-   DEBUG ARRAYS
-   ========================================================= */
-
-window.getStudents =
-    function () {
-        return students;
-    };
-
-
-window.getClasses =
-    function () {
-        return classes;
-    };
-
-
-window.getFees =
-    function () {
-        return fees;
-    };
-
-
-window.getPayments =
-    function () {
-        return payments;
-    };
 
 
 /* =========================================================
